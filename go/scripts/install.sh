@@ -2,14 +2,7 @@
 
 VERSION=1.10.2
 ARCH=linux-amd64
-
-if [[ $1 == "" ]]; then
-    echo -e "You must configure bash or zsh parameter
-Usage:
-- sh install bash
-- sh install zsh"
-    exit 1;
-fi
+ENV_SHELL=$(ps -e $$ | tail -n 1 | awk '{print $5}')
 
 echo -e "Installing Golang ${VERSION}"
 if [[ ! -d /usr/local/go/bin ]]; then
@@ -25,14 +18,14 @@ if [[ ! -d ${HOME}/go ]]; then
 fi
 
 # define vars
-if [[ $1 == "bash" ]]; then
+if [[ ${ENV_SHELL} == "/usr/bin/bash" ]]; then
     echo "export PATH=$PATH:/usr/local/go/bin" >> ${HOME}/.bashrc
     echo "export GOPATH=${HOME}/go" >> ${HOME}/.bashrc
     echo "export GOBIN=${HOME}/go/bin" >> ${HOME}/.bashrc
     source ${HOME}/.bashrc
 fi
 
-if [[ $1 == "zsh" ]]; then
+if [[ ${ENV_SHELL} == "/usr/bin/zsh" ]]; then
     echo "export PATH=$PATH:/usr/local/go/bin" >> ${HOME}/.customrc.sh
     echo "export GOPATH=${HOME}/go" >> ${HOME}/.customrc.sh 
     echo "export GOBIN=${HOME}/go/bin" >> ${HOME}/.customrc.sh
