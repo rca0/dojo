@@ -4,7 +4,7 @@ go:
   - master
 
   script:
-  - go test -v ./src
+  - go test -v ./go/src
 # slack notification
 #notifications:
 #  slack:
