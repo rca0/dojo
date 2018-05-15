@@ -1,0 +1,12 @@
+language: go
+go:
+  - 1.10
+  - master
+go_import_path: https://github.com/rca0/dojo/tree/master/go/src
+script:
+  - go build
+  - go test -v
+# slack notification
+#notifications:
+#  slack:
+#    secure: <hash>
