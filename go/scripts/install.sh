@@ -20,14 +20,16 @@ fi
 # define vars
 if [[ ${ENV_SHELL} == "/usr/bin/bash" ]]; then
     echo "export PATH=$PATH:/usr/local/go/bin" >> ${HOME}/.bashrc
-    echo "export GOPATH=${HOME}/go" >> ${HOME}/.bashrc
+    echo "export GOPATH=${HOME}/go/pkgs" >> ${HOME}/.bashrc
+    echo "export GOROOT=${HOME}/go" >> ${HOME}/.bashrc
     echo "export GOBIN=${HOME}/go/bin" >> ${HOME}/.bashrc
     source ${HOME}/.bashrc
 fi
 
 if [[ ${ENV_SHELL} == "/usr/bin/zsh" ]]; then
     echo "export PATH=$PATH:/usr/local/go/bin" >> ${HOME}/.customrc.sh
-    echo "export GOPATH=${HOME}/go" >> ${HOME}/.customrc.sh 
+    echo "export GOPATH=${HOME}/go/pkgs" >> ${HOME}/.customrc.sh 
+    echo "export GOROOT=${HOME}/go" >> ${HOME}/.customrc.sh 
     echo "export GOBIN=${HOME}/go/bin" >> ${HOME}/.customrc.sh
     source ${HOME}/.bashrc
 fi 
