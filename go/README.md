@@ -18,6 +18,7 @@ run | executes binary with docker container
 clean | force prune all docker images 
 
 With this option the Go binaires will be created and executed using Docker.
+
 It is not needs to install Golang in your system operational, just the Docker.
 
 [Get Docker](https://www.docker.com/get-docker)
@@ -37,6 +38,7 @@ make build -e APP=hello -e IMAGE=golang-image:1.0
 ```
 
 Uses `-e APP=<application_name>` parameter to pass the name of file that is in `src/` directory.
+
 Uses `-e IMAGE=<image_name>:<version>` parameter to create docker image. (`gode-dojo` is default)
 
 * Run application
@@ -46,7 +48,9 @@ make run -e APP=hello -e IMAGE=golang-image:1.0
 ```
 
 Uses `run` target to executes binary with the docker container.
+
 Uses `-e APP=<application_name>` to set the application name, just pass the name without the `.go` extensions.
+
 Uses `-e IMAGE=<image_name>:<version>` parameter to run with the docker image already created. (`gode-dojo` is default)
 
 * Clean images
