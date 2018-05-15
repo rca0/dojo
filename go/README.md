@@ -1,6 +1,6 @@
 # Golang
 
-## Get start 
+## Get started 
 
 Copy the repository:
 
@@ -54,4 +54,30 @@ Before execute the target, valid yours docker images.
 
 ```bash
 make clean
+```
+
+## Using script to install Golang
+
+This script will download and install Golang.
+
+Will set up the environment variables:
+
+* $PATH - add go binary to the PATH environment variable.
+* $GOPATH - for your own go projects / 3rd party libraries (downloaded with `go get`)
+* $GOROOT - for compiler/tools that comes from go installation. 
+* $GOBIN - for install the binaries (using `go install`)
+
+Will create the root diretory:
+
+```bash
+/home/${USER}/go
+  /bin
+  /pkg
+  /src
+```
+
+Command line to install, works in `bash` and `zsh`.
+
+```bash
+sh scripts/install.sh
 ```
