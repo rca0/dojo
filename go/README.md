@@ -33,19 +33,21 @@ It will build all files with extensions `*.go` in `src/` path.
 * 2nd Option:
 
 ```bash
-make build -e APP=hello
+make build -e APP=hello -e IMAGE=golang-image:1.0
 ```
 
-Uses `-e` parameter to pass the name of file that is in `src/` directory.
+Uses `-e APP=<application_name>` parameter to pass the name of file that is in `src/` directory.
+Uses `-e IMAGE=<image_name>:<version>` parameter to create docker image. (`gode-dojo` is default)
 
 * Run application
 
 ```bash
-make run -e APP=hello
+make run -e APP=hello -e IMAGE=golang-image:1.0
 ```
 
 Uses `run` target to executes binary with the docker container.
 Uses `-e APP=<application_name>` to set the application name, just pass the name without the `.go` extensions.
+Uses `-e IMAGE=<image_name>:<version>` parameter to run with the docker image already created. (`gode-dojo` is default)
 
 * Clean images
 
