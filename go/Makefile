@@ -1,8 +1,8 @@
 #
 # targets:
 #         - all: execute build and run targets
-#         - app: binary that is in /src
-#         - image: image name that will be builded
+#         - build: build all files that is in /src
+#         - run: executes binary with docker container
 #         - clean: force prune all docker images (be careful to run) 
 
 APP ?= hello
