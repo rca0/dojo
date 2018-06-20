@@ -1,6 +1,6 @@
 ## Kops (Kubernetes Operations)
 
-Disclaimer: Launching a Kubernetes cluster hosted on AWS, GCE or DigitalOcean
+kops (https://github.com/kubernetes/kops) helps you create, destroy, upgrade and maintain production-grade, highly available, Kubernetes clusters from the command line. AWS (Amazon Web Services) is currently officially supported, with GCE in beta support , and VMware vSphere in alpha, and other platforms planned
 
 Tools required:
 
