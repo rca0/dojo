@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'k8s template for iam resource'
+Resources:
+  tfIAM:
+    Type: "AWS::IAM::User"
+    Properties:
+      UserName: tf-ruan
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/IAMFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+  tfAccessKey:
+    Type: "AWS::IAM::AccessKey"
+    Properties:
+      UserName: !Ref tfIAM
+Outputs:
+  tfAccessKeyId:
+    Description: 'AWS_ACCESS_KEY_ID'
+    Value:
+      !Ref tfAccessKey
+    Export:
+      Name: !Sub '${AWS::StackName}-AWS-ACCESS-KEY-ID'
+  tfSecretKeyId:
+    Description: 'AWS_SECRET_ACCESS_KEY'
+    Value: !GetAtt tfAccessKey.SecretAccessKey
+    Export:
+      Name: !Sub '${AWS::StackName}-AWS-SECRET-ACCESS-KEY'
