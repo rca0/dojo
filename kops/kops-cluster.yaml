@@ -1,0 +1,139 @@
+apiVersion: kops/v1alpha2
+kind: Cluster
+metadata:
+  ## CHANGEME
+  name: cluster.k8s-ruan-us-east-1.domain.io
+spec:
+  api:
+    loadBalancer:
+      type: Public
+  authorization:
+    alwaysAllow: {}
+  channel: stable
+  cloudProvider: aws
+  ## CHANGEME
+  configBase: s3://k8s-ruan-us-east-1.domain.io/cluster.k8s-ruan-us-east-1.domain.io
+  ## CHANGEME
+  dnsZone: Z3UZWX4ZN
+  etcdClusters:
+  - etcdMembers:
+    - instanceGroup: master-us-east-1a
+      name: a
+    - instanceGroup: master-us-east-1b
+      name: b
+    - instanceGroup: master-us-east-1c
+      name: c
+    name: main
+  - etcdMembers:
+    - instanceGroup: master-us-east-1a
+      name: a
+    - instanceGroup: master-us-east-1b
+      name: b
+    - instanceGroup: master-us-east-1c
+      name: c
+    name: events
+  ## CHANGEME
+  kubernetesApiAccess:
+  - 200.200.200.0/24
+  kubernetesVersion: 1.9.2
+  masterInternalName: api.internal.cluster.k8s-ruan-us-east-1.domain.io
+  masterPublicName: api.cluster.k8s-ruan-us-east-1.domain.io
+  additionalPolicies:
+    master: |
+      [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "autoscaling:DescribeAutoScalingGroups",
+            "autoscaling:DescribeAutoScalingInstances",
+            "autoscaling:DescribeTags",
+            "autoscaling:DescribeLaunchConfigurations",
+            "autoscaling:SetDesiredCapacity",
+            "autoscaling:TerminateInstanceInAutoScalingGroup"
+          ],
+          "Resource": ["*"]
+        }
+      ]
+  ## CHANGEME
+  networkCIDR: 10.200.0.0/16
+  ## CHANGEME
+  networkID: vpc-3cd632
+  networking:
+    flannel:
+      backend: vxlan
+  hooks:
+  - manifest: |
+      Type=oneshot
+      ExecStart=/usr/bin/docker run --net host quay.io/sergioballesteros/check-aws-tags
+      ExecStartPost=/bin/systemctl restart kubelet.service
+    name: ensure-aws-tags.service
+    requires:
+    - docker.service
+    roles:
+    - Node
+    - Master
+  iam:
+    legacy: false
+  nonMasqueradeCIDR: 100.90.0.0/10
+  ## CHANGEME
+  sshAccess:
+  - 200.200.200.0/24
+  subnets:
+    ## CHANGEME
+  - egress: nat-0221101590e925c
+    ## CHANGEME
+    id: subnet-3cac72
+    name: private-us-east-1a
+    type: Private
+    zone: us-east-1a
+    ## CHANGEME
+  - egress: nat-0ca7673813be115
+    ## CHANGEME
+    id: subnet-b9d30a
+    name: private-us-east-1b
+    type: Private
+    zone: us-east-1b
+    ## CHANGEME
+  - egress: nat-08a960519ce76b9
+    ## CHANGEME
+    id: subnet-cfd60e
+    name: private-us-east-1c
+    type: Private
+    zone: us-east-1c
+    ## CHANGEME
+  - id: subnet-a3bd63
+    name: public-us-east-1a
+    type: Public
+    zone: us-east-1a
+    ## CHANGEME
+  - id: subnet-efcd14
+    name: public-us-east-1b
+    type: Public
+    zone: us-east-1b
+    ## CHANGEME
+  - id: subnet-b6c911
+    name: public-us-east-1c
+    type: Public
+    zone: us-east-1c
+    ## CHANGEME
+  - id: subnet-a3bd63
+    name: utility-us-east-1a
+    type: Utility
+    zone: us-east-1a
+    ## CHANGEME
+  - id: subnet-efcd14
+    name: utility-us-east-1b
+    type: Utility
+    zone: us-east-1b
+    ## CHANGEME
+  - id: subnet-b6c91198
+    name: utility-us-east-1c
+    type: Utility
+    zone: us-east-1c
+  topology:
+    bastion:
+      bastionPublicName: bastion.cluster.k8s-ruan-us-east-1.domain.io
+    dns:
+      type: Public
+    masters: private
+    nodes: private

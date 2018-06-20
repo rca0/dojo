@@ -1,0 +1,25 @@
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: cluster.k8s-ruan-us-east-1.domain.io
+  name: nodes-spot-us-east-1
+spec:
+  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2017-12-02
+  nodeLabels:
+    spot: "true"
+  cloudLabels:
+    project: ruan
+    environment: k8s-ruan-us-east-1
+    k8s.io/cluster-autoscaler/enabled: "1"
+    kubernetes.io/cluster/cluster.k8s-ruan-us-east-1.domain.io: "1"
+  machineType: r4.large
+  # use spot instance
+  maxPrice: "0.0928"
+  maxSize: 4
+  minSize: 2
+  role: Node
+  subnets:
+  - private-us-east-1a
+  - private-us-east-1b
+  - private-us-east-1c
