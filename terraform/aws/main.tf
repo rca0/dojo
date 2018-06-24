@@ -9,7 +9,8 @@ provider "aws" {
   profile = "sandbox"
 }
 
+# Store the cluster configuration
 resource "aws_s3_bucket" "bucket" {
-  bucket = "ruan-us-east-1"
+  bucket = "k8s-ruan-us-east-1"
   acl = "private"
 }
