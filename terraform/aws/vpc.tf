@@ -163,6 +163,35 @@ resource "aws_nat_gateway" "natgw-pv-ruan-1b" {
 }
 
 #########################################
+# Network ACL
+#########################################
+resource "aws_network_acl" "ntw-acl-pv-ruan-us-east-1" {
+  vpc_id = "${aws_vpc.vpc-ruan.id}"
+
+  ingress {
+    rule_no = 100
+    from_port = 0
+    to_port = 0
+    protocol = -1
+    action = "allow"
+    cidr_block = "${var.vpc_cidr}"
+  }
+
+  egress {
+    rule_no = 100
+    from_port = 0
+    to_port = 0
+    protocol = -1
+    action = "allow"
+    cidr_block = "${var.vpc_cidr}"
+  }
+
+  tags {
+    Name = "${var.network-acl-pv}"
+  }
+}
+
+#########################################
 # Security Group
 #########################################
 resource "aws_security_group" "public-sg" {

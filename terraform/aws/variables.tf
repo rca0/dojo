@@ -88,3 +88,8 @@ variable "rt-pb-tag-1b" {
 variable "rt-pv-tag-1b" {
   default = "rt-pv-ruan-us-east-1b"
 }
+
+# Network ACL private
+variable "network-acl-pv" {
+  default = "ntw-acl-pv-ruan-us-east-1"
+}
