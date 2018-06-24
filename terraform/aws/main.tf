@@ -16,6 +16,17 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 # Create DNS Zone
-resource "aws_route53_zone" "ruan" {
-  name = "k8s-ruan-us-east-1.domain.io"
+resource "aws_route53_zone" "main" {
+  name = "domain.io"
+}
+
+resource "aws_route53_record" "k8s" {
+  zone_id = "${aws_route53_zone.main.zone_id}"
+  name = "k8s-ruan-us-east-1"
+  type = "NS"
+  ttl = "3600"
+}
+
+output "ns-servers" {
+  value = "${aws_route53_zone.main.name_servers}"
 }
