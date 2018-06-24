@@ -168,6 +168,7 @@ resource "aws_nat_gateway" "natgw-pv-ruan-1b" {
 resource "aws_network_acl" "ntw-acl-pv-ruan-us-east-1" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
 
+  # Inbound Rules
   ingress {
     rule_no = 100
     from_port = 0
@@ -177,6 +178,7 @@ resource "aws_network_acl" "ntw-acl-pv-ruan-us-east-1" {
     cidr_block = "${var.vpc_cidr}"
   }
 
+  # Outbound rules
   egress {
     rule_no = 100
     from_port = 0
@@ -189,6 +191,114 @@ resource "aws_network_acl" "ntw-acl-pv-ruan-us-east-1" {
   tags {
     Name = "${var.network-acl-pv}"
   }
+}
+
+resource "aws_network_acl" "ntw-acl-pb-ruan-us-east-1" {
+    vpc_id = "${aws_vpc.vpc-ruan.id}"
+
+    # Inbound Rules
+    ingress {
+      rule_no = 100
+      from_port = 0
+      to_port = 0
+      protocol = -1
+      action = "allow"
+      cidr_block = "${var.vpc_cidr}"
+    }
+
+    # HTTP
+    ingress {
+      rule_no = 200
+      action = "allow"
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    # HTTPS
+    ingress {
+      rule_no = 250
+      action = "allow"
+      from_port = 443
+      to_port = 443
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    # SSH
+    ingress {
+      rule_no = 300
+      action = "allow"
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
+      cidr_block = "${var.my-ip}"
+    }
+
+    # EPHEMERAL PORTS
+    ingress {
+      rule_no = 400
+      action = "allow"
+      from_port = 1024
+      to_port = 65535
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    # Outbound rules
+    egress {
+      rule_no = 100
+      from_port = 0
+      to_port = 0
+      protocol = -1
+      action = "allow"
+      cidr_block = "${var.vpc_cidr}"
+    }
+
+    # HTTP
+    egress {
+      rule_no = 200
+      action = "allow"
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    # HTTPS
+    egress {
+      rule_no = 250
+      action = "allow"
+      from_port = 443
+      to_port = 443
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    # SMTP
+    egress {
+      rule_no = 300
+      action = "allow"
+      from_port = 587
+      to_port = 587
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    # EPHEMERAL PORTS
+    egress {
+      rule_no = 400
+      action = "allow"
+      from_port = 1024
+      to_port = 65535
+      protocol = "tcp"
+      cidr_block = "0.0.0.0/0"
+    }
+
+    tags {
+      Name = "${var.network-acl-pb}"
+    }
 }
 
 #########################################
