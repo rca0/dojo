@@ -9,6 +9,16 @@ resource "aws_vpc" "vpc-ruan" {
 }
 
 #########################################
+# Internet Gateway
+#########################################
+resource "aws_internet_gateway" "igw-ruan" {
+  vpc_id = "${aws_vpc.vpc-ruan.id}"
+  tags {
+    Name = "${var.igw-tag}"
+  }
+}
+
+#########################################
 # Elastic IP
 #########################################
 resource "aws_eip" "eip-1a" {
@@ -64,15 +74,8 @@ resource "aws_subnet" "subnet-ruan-pv-1b" {
 }
 
 #########################################
-# Internet Gateway | Public Routing table
+# Public Routing table
 #########################################
-resource "aws_internet_gateway" "igw-ruan" {
-  vpc_id = "${aws_vpc.vpc-ruan.id}"
-  tags {
-    Name = "${var.igw-tag}"
-  }
-}
-
 resource "aws_route_table" "rt-pb-ruan-1a" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   route {
