@@ -8,8 +8,22 @@ resource "aws_vpc" "vpc-ruan" {
   }
 }
 
-# AZ A
-# Public Subnet AZ A
+#########################################
+# Elastic IP
+#########################################
+resource "aws_eip" "eip-1a" {
+  vpc = true
+  depends_on = ["aws_internet_gateway.igw-ruan"]
+}
+
+resource "aws_eip" "eip-1b" {
+  vpc = true
+  depends_on = ["aws_internet_gateway.igw-ruan"]
+}
+
+#########################################
+# Public Subnet
+#########################################
 resource "aws_subnet" "subnet-ruan-pb-1a" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   cidr_block = "${var.public_subnet_cidr_1a}"
@@ -19,18 +33,6 @@ resource "aws_subnet" "subnet-ruan-pb-1a" {
   }
 }
 
-# Private Subnet AZ A
-resource "aws_subnet" "subnet-ruan-pv-1a" {
-  vpc_id = "${aws_vpc.vpc-ruan.id}"
-  cidr_block = "${var.private_subnet_cidr_1a}"
-  availability_zone = "us-east-1a"
-  tags {
-    Name = "${var.subnet-pv-tag-1a}"
-  }
-}
-
-# AZ B
-# Public Subnet AZ A
 resource "aws_subnet" "subnet-ruan-pb-1b" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   cidr_block = "${var.public_subnet_cidr_1b}"
@@ -40,7 +42,18 @@ resource "aws_subnet" "subnet-ruan-pb-1b" {
   }
 }
 
-# Private Subnet AZ B
+#########################################
+# Private Subnet
+#########################################
+resource "aws_subnet" "subnet-ruan-pv-1a" {
+  vpc_id = "${aws_vpc.vpc-ruan.id}"
+  cidr_block = "${var.private_subnet_cidr_1a}"
+  availability_zone = "us-east-1a"
+  tags {
+    Name = "${var.subnet-pv-tag-1a}"
+  }
+}
+
 resource "aws_subnet" "subnet-ruan-pv-1b" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   cidr_block = "${var.private_subnet_cidr_1b}"
@@ -50,7 +63,9 @@ resource "aws_subnet" "subnet-ruan-pv-1b" {
   }
 }
 
-# Internet Gateway for the Public Subnet AZ A
+#########################################
+# Internet Gateway | Public Routing table
+#########################################
 resource "aws_internet_gateway" "igw-ruan" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   tags {
@@ -58,35 +73,6 @@ resource "aws_internet_gateway" "igw-ruan" {
   }
 }
 
-# Elastic IP (EIP) AZ A
-resource "aws_eip" "eip" {
-  vpc = true
-  depends_on = ["aws_internet_gateway.igw-ruan"]
-}
-
-
-# NAT Gateway for the Private subnet 1a
-resource "aws_nat_gateway" "natgw-pv-ruan-1a" {
-  allocation_id = "${aws_eip.eip.id}"
-  subnet_id     = "${aws_subnet.subnet-ruan-pv-1a.id}"
-  depends_on    = ["aws_internet_gateway.igw-ruan"]
-  tags {
-    Name = "natgw-pv-ruan-1a"
-  }
-}
-
-# NAT Gateway for the Private subnet 1b
-resource "aws_nat_gateway" "natgw-pv-ruan-1b" {
-  allocation_id = "${aws_eip.eip.id}"
-  subnet_id     = "${aws_subnet.subnet-ruan-pv-1b.id}"
-  depends_on    = ["aws_internet_gateway.igw-ruan"]
-  tags {
-    Name = "natgw-pv-ruan-1b"
-  }
-}
-
-# AZ A
-# Routing table for Public Subnet AZ 1a
 resource "aws_route_table" "rt-pb-ruan-1a" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   route {
@@ -98,20 +84,6 @@ resource "aws_route_table" "rt-pb-ruan-1a" {
   }
 }
 
-# Routing table for Private Subnet AZ 1a
-resource "aws_route_table" "rt-pv-ruan-1a" {
-  vpc_id = "${aws_vpc.vpc-ruan.id}"
-  route {
-    cidr_block = "${var.private_subnet_cidr_1a}"
-    gateway_id = "${aws_nat_gateway.natgw-pv-ruan-1a.id}"
-  }
-  tags {
-    Name = "${var.rt-pv-tag-1a}"
-  }
-}
-
-# AZ B
-# Routing table for Public Subnet AZ 1b
 resource "aws_route_table" "rt-pb-ruan-1b" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   route {
@@ -123,11 +95,35 @@ resource "aws_route_table" "rt-pb-ruan-1b" {
   }
 }
 
-# Routing table for Private Subnet AZ 1b
+resource "aws_route_table_association" "assn-subnet-ruan-pb-1a" {
+  subnet_id      = "${aws_subnet.subnet-ruan-pb-1a.id}"
+  route_table_id = "${aws_route_table.rt-pb-ruan-1a.id}"
+}
+
+resource "aws_route_table_association" "assn-subnet-ruan-pb-1b" {
+  subnet_id      = "${aws_subnet.subnet-ruan-pb-1b.id}"
+  route_table_id = "${aws_route_table.rt-pb-ruan-1b.id}"
+}
+
+
+#########################################
+# Private Routing table
+#########################################
+resource "aws_route_table" "rt-pv-ruan-1a" {
+  vpc_id = "${aws_vpc.vpc-ruan.id}"
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_nat_gateway.natgw-pv-ruan-1a.id}"
+  }
+  tags {
+    Name = "${var.rt-pv-tag-1a}"
+  }
+}
+
 resource "aws_route_table" "rt-pv-ruan-1b" {
   vpc_id = "${aws_vpc.vpc-ruan.id}"
   route {
-    cidr_block = "${var.private_subnet_cidr_1b}"
+    cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_nat_gateway.natgw-pv-ruan-1b.id}"
   }
   tags {
@@ -135,33 +131,40 @@ resource "aws_route_table" "rt-pv-ruan-1b" {
   }
 }
 
-# AZ A
-# Associate the routing table to Public Subnet
-resource "aws_route_table_association" "assn-subnet-ruan-pb-1a" {
-  subnet_id      = "${aws_subnet.subnet-ruan-pb-1a.id}"
-  route_table_id = "${aws_route_table.rt-pb-ruan-1a.id}"
-}
-
-# Associate the routing table to Private Subnet
 resource "aws_route_table_association" "assn-subnet-ruan-pv-1a" {
   subnet_id      = "${aws_subnet.subnet-ruan-pv-1a.id}"
   route_table_id = "${aws_route_table.rt-pv-ruan-1a.id}"
 }
 
-# AZ B
-# Associate the routing table to Public Subnet
-resource "aws_route_table_association" "assn-subnet-ruan-pb-1b" {
-  subnet_id      = "${aws_subnet.subnet-ruan-pb-1b.id}"
-  route_table_id = "${aws_route_table.rt-pb-ruan-1b.id}"
-}
-
-# Associate the routing table to Private Subnet
 resource "aws_route_table_association" "assn-subnet-ruan-pv-1b" {
   subnet_id      = "${aws_subnet.subnet-ruan-pv-1b.id}"
   route_table_id = "${aws_route_table.rt-pv-ruan-1b.id}"
 }
 
-# ECS Instance Security Group
+#########################################
+# NAT GATEWAY
+#########################################
+resource "aws_nat_gateway" "natgw-pv-ruan-1a" {
+  allocation_id = "${aws_eip.eip-1a.id}"
+  subnet_id     = "${aws_subnet.subnet-ruan-pv-1a.id}"
+  depends_on    = ["aws_internet_gateway.igw-ruan"]
+  tags {
+    Name = "natgw-pv-ruan-1a"
+  }
+}
+
+resource "aws_nat_gateway" "natgw-pv-ruan-1b" {
+  allocation_id = "${aws_eip.eip-1b.id}"
+  subnet_id     = "${aws_subnet.subnet-ruan-pv-1b.id}"
+  depends_on    = ["aws_internet_gateway.igw-ruan"]
+  tags {
+    Name = "natgw-pv-ruan-1b"
+  }
+}
+
+#########################################
+# Security Group
+#########################################
 resource "aws_security_group" "public-sg" {
   name = "public-sg"
   description = "Public Access Security Group"

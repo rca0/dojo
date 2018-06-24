@@ -59,7 +59,7 @@ variable "rt-pv-tag-1a" {
 # Public Subnet Mask /20
 variable "public_subnet_cidr_1b" {
   description = "CIDR for the public subnet"
-  default = "10.200.48.0/20"
+  default = "10.200.32.0/20"
 }
 
 # Tag name for Public Subnet AZ 1b
@@ -70,7 +70,7 @@ variable "subnet-pb-tag-1b" {
 # Private Subnet Mask /20
 variable "private_subnet_cidr_1b" {
   description = "CIDR for the public subnet"
-  default = "10.200.64.0/20"
+  default = "10.200.48.0/20"
 }
 
 # AZ B
