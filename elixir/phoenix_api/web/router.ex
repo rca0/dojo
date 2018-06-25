@@ -8,4 +8,9 @@ defmodule PhoenixApi.Router do
   scope "/api", PhoenixApi do
     pipe_through :api
   end
+
+  scope "/", PhoenixApi do
+    pipe_through :api
+    get "/", WelcomeController, :index
+  end
 end
