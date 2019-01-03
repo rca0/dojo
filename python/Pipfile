@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+prometheus-client = "*"
+
+[requires]
+python_version = "3.6"
+
+[dev-packages]
+black = "==18.9b0"
+pylint = "*"
+rope = "*"
+jedi = "*"
+yapf = "*"
