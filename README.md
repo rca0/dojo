@@ -1,6 +1,4 @@
-# dojo
-
-This repository will focus on learning programming languages ​​and technologies.
+This repository will focus on learning programming languages and technologies.
 
 Language | Description
 --- | ---
