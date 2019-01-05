@@ -4,10 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-prometheus-client = "*"
-jsonschema = "*"
-Flask = "*"
 asyncio = "*"
+Flask = "*"
+jsonschema = "*"
+pika = "*"
+prometheus-client = "*"
 websockets = "*"
 
 [requires]
@@ -15,7 +16,7 @@ python_version = "3.6"
 
 [dev-packages]
 black = "==18.9b0"
+jedi = "*"
 pylint = "*"
 rope = "*"
-jedi = "*"
 yapf = "*"
