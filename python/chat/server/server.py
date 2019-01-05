@@ -4,6 +4,7 @@ import json
 
 CLIENTS = {}
 
+
 async def write(msg):
     tasks = []
     for user in CLIENTS:
@@ -29,9 +30,9 @@ async def hello(ws, path):
         except websockets.ConnectionClosed:
             CLIENTS.pop(username)
             asyncio.ensure_future(write({chatchat
-                'user': 'system',
-                'msg': 'User [{}] has left'.format(username)
-            }))
+                                         'user': 'system',
+                                         'msg': 'User [{}] has left'.format(username)
+                                         }))
             break
 
         asyncio.ensure_future(write(message))

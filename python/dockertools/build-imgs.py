@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import shutil
 import sys
 from os import path
@@ -21,7 +20,7 @@ def main(argv):
 
 def docker_build(name, path):
     if not ':' in name:
-         name = name + ":latest"
+        name = name + ":latest"
 
     tmp_dir = make_tmp_dir(name)
     copy_dir(path, tmp_dir)
