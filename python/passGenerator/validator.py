@@ -1,9 +1,4 @@
-from jsonschema import Draft4Validator
-from jsonschema import (
-    validate,
-    ValidationError,
-)
-
+from jsonschema import Draft4Validator, ValidationError, validate
 from schema.password import SCHEMA
 
 
@@ -12,6 +7,6 @@ def validate_schema(data):
     try:
         validator.validate(data)
     except ValidationError as error:
-        raise
+        raise ValueError(error)
 
     return validator

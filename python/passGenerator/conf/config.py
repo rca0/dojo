@@ -16,5 +16,6 @@ def get_config(config_path='conf/config.ini'):
         'PATH': dir_gen
     }
 
+
 CONFIG = get_config()
 DIR_GEN = CONFIG['PATH']

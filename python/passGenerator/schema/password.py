@@ -3,19 +3,19 @@ SCHEMA = {
     "type": "object",
     "properties": {
         "uppercase": {
-            "type": { "boolean" },
+            "type": {"boolean"},
         },
         "lowercase": {
-            "type": { "boolean" },
+            "type": {"boolean"},
         },
         "numbers": {
-            "type": { "boolean" },
+            "type": {"boolean"},
         },
         "size": {
-            "type": { "number" },
+            "type": {"number"},
         },
         "chars": {
-            "type": { "string" },
+            "type": {"string"},
         },
     },
     "required": ["size"]

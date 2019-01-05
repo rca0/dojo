@@ -2,12 +2,12 @@ import logging
 import sys
 from os import path
 
+from api.app import app
+from conf.config import DIR_GEN
+
 sys.path.insert(0, path.abspath(
     path.dirname(path.dirname(__file__)),
 ))
-
-from api.app import app
-from conf.config import DIR_GEN
 
 
 def main():
