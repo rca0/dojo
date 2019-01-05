@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 prometheus-client = "*"
+jsonschema = "*"
+Flask = "*"
 
 [requires]
 python_version = "3.6"
