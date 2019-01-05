@@ -29,10 +29,13 @@ async def hello(ws, path):
             }
         except websockets.ConnectionClosed:
             CLIENTS.pop(username)
-            asyncio.ensure_future(write({chatchat
-                                         'user': 'system',
-                                         'msg': 'User [{}] has left'.format(username)
-                                         }))
+            asyncio.ensure_future(write(
+                {
+                    chatchat
+                    'user': 'system',
+                    'msg': 'User [{}] has left'.format(username)
+                }
+            ))
             break
 
         asyncio.ensure_future(write(message))
