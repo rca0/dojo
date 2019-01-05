@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-#-*- coding: UTF-8 -*-
+import os
+
 
 OPTIONS = [
     'Addition',
@@ -15,50 +15,56 @@ FUNCTION = {
     4: lambda a, b: a/b,
 }
 
+
+def msg_error(msg, err=""):
+    print(msg, err)
+
+
 class Calculator(object):
 
     def __init__(self):
         self.run()
 
     def run(self):
-        self.options()
-
-    def options(self):
 
         while True:
             options = OPTIONS
-            print "Calculator Cli"
+            print("Calculator CLI")
             for i in range(len(options)):
-                print i+1, "-", options[i]
+                print(i+1, "-", options[i])
 
             try:
-                choice = int(raw_input("Choice any option: "))
-            except ValueError as e:
-                print 'ERROR Invalid Value - %s' % (e)
+                choice = int(input("Choice any option: "))
+            except ValueError:
+                msg_error("[ERROR] Invalid Value")
 
             if choice < 0 or choice > len(options):
-                print "Invalid Option"
-            else:
-                self.choice_option(choice)
+                msg_error("[ERROR] Invalid option")
+
+            self.choice_option(choice)
 
     def choice_option(self, x):
+        os.system("clear")
         options = OPTIONS
-        func = FUNCTION[x]
-        if FUNCTION.has_key(x):
-            print "Selected Option - ", options[x-1]
-            print func(*self.value_number())
+
+        try:
+            func = FUNCTION[x]
+        except KeyError as error:
+            msg_error("[ERROR] Invalid option -", error)
+
+        if x in FUNCTION:
+            print("Selected Option - ", options[x-1])
+            print(func(*self.value_number()))
 
     def value_number(self):
         try:
-            a = float(raw_input("Type first number: "))
-            b = float(raw_input("Type secunde number: "))
-        except IndexError as e:
-            print 'ERROR Invalid Value - %s' % (e)
+            a = float(input("Type first number: "))
+            b = float(input("Type second number: "))
+        except (ValueError, IndexError, KeyError) as error:
+            msg_error("[ERROR]", error)
 
         return a, b
 
-def main():
-    calc = Calculator()
 
 if __name__ == '__main__':
-    main()
+    calc = Calculator()
