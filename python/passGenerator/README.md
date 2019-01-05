@@ -23,10 +23,8 @@ Requirements:
 - [x] Tool curl
 
 ```bash
-pyenv install 3.5.2
-pyenv rehash
-pyenv shell 3.5.2
-pip install -r requirements.txt
+pipenv install --dev
+pipenv shell
 ```
 
 ## Executing
