@@ -8,11 +8,9 @@ EXCEPTIONS = Counter('hello_world_exceptions_total', 'Exceptions serving Hello W
 
 
 class MyHandler(http.server.BaseHTTPRequestHandler):
+    @EXCEPTIONS.count_exceptions()
     def do_GET(self):
         REQUESTS.inc()
-        with EXCEPTIONS.count_exceptions():
-            if random.random() < 0.2:
-                raise Exception
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b'Hello World')
