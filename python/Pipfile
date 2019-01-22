@@ -12,7 +12,7 @@ prometheus-client = "*"
 websockets = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
 
 [dev-packages]
 black = "==18.9b0"
