@@ -1,0 +1,6 @@
+RABBITMQ_HOSTNAME = "awesome.hostname"
+RABBITMQ_PASSWORD = "pass"
+RABBITMQ_PORT = 5672
+RABBITMQ_USER = "guest"
+RABBITMQ_VHOST = "test"
+RABBITMQ_QUEUE_NAME = "hello-world"
