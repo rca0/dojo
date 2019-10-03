@@ -4,16 +4,26 @@ from confluent_kafka import Producer
 
 import config
 
-p = Producer({
+DATA = {
     'bootstrap.servers': config.KAFKA_BROKERS,
     'broker.version.fallback': '0.10.0.0',
     'api.version.fallback.ms': 0,
     'sasl.mechanisms': 'PLAIN',
-    'security.protocol': 'SASL_SSL',
-    'sasl.username': config.KAFKA_KEY,
-    'sasl.password': config.KAFKA_SECRET
-})
+}
 
+
+if config.KAFKA_KEY and config.KAFKA_SECRET:
+    data = {
+        'security.protocol': 'SASL_SSL',
+        'sasl.username': config.KAFKA_KEY,
+        'sasl.password': config.KAFKA_SECRET,
+        **DATA
+    }
+else:
+    data = DATA
+
+
+p = Producer(data)
 
 print("Publishing message...")
 if len(sys.argv) < 2:
