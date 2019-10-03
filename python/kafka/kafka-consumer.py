@@ -4,18 +4,26 @@ from confluent_kafka import Consumer
 
 import config
 
-consumer = Consumer({
+DATA = {
     'bootstrap.servers': config.KAFKA_BROKERS,
     'broker.version.fallback': '0.10.0.0',
     'api.version.fallback.ms': 0,
     'sasl.mechanisms': 'PLAIN',
-    'security.protocol': 'SASL_SSL',
-    'sasl.username': config.KAFKA_KEY,
-    'sasl.password': config.KAFKA_SECRET,
-    # this will create a new consumer group on each invocation.
     'group.id': str(uuid.uuid1()),
     'auto.offset.reset': 'earliest'
-})
+}
+
+if config.KAFKA_KEY and config.KAFKA_SECRET:
+    data = {
+        'security.protocol': 'SASL_SSL',
+        'sasl.username': config.KAFKA_KEY,
+        'sasl.password': config.KAFKA_SECRET,
+        **DATA
+    }
+else:
+    data = DATA
+
+consumer = Consumer(data)
 
 consumer.subscribe([config.KAFKA_TOPIC])
 
